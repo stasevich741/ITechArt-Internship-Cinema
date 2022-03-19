@@ -9,13 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class FilmDao implements Dao<Film> {
+import static cinema.query.FilmQuery.*;
 
-    private static final String FIND_ALL_FILMS_QUERY = "select id, name, date_and_time, tickets_list from film";
-    private static final String FIND_BY_ID_FILM_QUERY = "select id, name, date_and_time, tickets_list from film where id=?";
-    private static final String DELETE_FILM_BY_ID_QUERY = "delete from film where id=?";
-    private static final String INSERT_FILM_QUERY = "insert into film ( name, date_and_time, tickets_list ) VALUES (?,?,?)";
-    private static final String UPDATE_FILM_QUERY = "update film set name =?,date_and_time=?,tickets_list=? where id=?";
+public class FilmDao implements Dao<Film> {
 
     @Override
     public List<Film> findAll() {
@@ -60,7 +56,7 @@ public class FilmDao implements Dao<Film> {
     }
 
     @Override
-    public void update(Film film) {
+    public Film update(Film film) {
         try (Connection connection = ConnectionManager.get()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_FILM_QUERY);
             preparedStatement.setString(1, film.getName());
@@ -71,10 +67,11 @@ public class FilmDao implements Dao<Film> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return film;
     }
 
     @Override
-    public void save(Film film) {
+    public Film save(Film film) {
         try (Connection connection = ConnectionManager.get()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_FILM_QUERY, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, film.getName());
@@ -84,6 +81,7 @@ public class FilmDao implements Dao<Film> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return film;
     }
 
     private Film buildFilm(ResultSet resultSet) throws SQLException {

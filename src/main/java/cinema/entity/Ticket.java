@@ -1,10 +1,12 @@
 package cinema.entity;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Value
+@Data
+@AllArgsConstructor
 public class Ticket {
 
     Long id;

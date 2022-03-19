@@ -10,13 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TicketDao implements Dao<Ticket> {
+import static cinema.query.TicketQuery.*;
 
-    private static final String FIND_ALL_TICKETS_QUERY = "select id, user_id, film, seat_place, price, is_bought from ticket";
-    private static final String DELETE_TICKET_BY_ID_QUERY = "delete from ticket where id=?";
-    private static final String INSERT_TICKET_QUERY = "insert into ticket ( user_id, film, seat_place, price, is_bought) VALUES (?,?,?,?,?)";
-    private static final String UPDATE_TICKET_QUERY = "update ticket set user_id =?,film=?,seat_place=?,price=?,is_bought=? where id=?";
-    private static final String FIND_BY_ID_QUERY = "select id, user_id, film, seat_place, price, is_bought from ticket where id=?";
+public class TicketDao implements Dao<Ticket> {
 
     @Override
     public List<Ticket> findAll() {
@@ -61,7 +57,7 @@ public class TicketDao implements Dao<Ticket> {
     }
 
     @Override
-    public void update(Ticket ticket) {
+    public Ticket update(Ticket ticket) {
         try (Connection connection = ConnectionManager.get()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TICKET_QUERY);
             preparedStatement.setInt(1, ticket.getUserId());
@@ -74,10 +70,11 @@ public class TicketDao implements Dao<Ticket> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return ticket;
     }
 
     @Override
-    public void save(Ticket ticket) {
+    public Ticket save(Ticket ticket) {
         try (Connection connection = ConnectionManager.get()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TICKET_QUERY, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, ticket.getUserId());
@@ -89,6 +86,7 @@ public class TicketDao implements Dao<Ticket> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return ticket;
     }
 
     private Ticket buildTicket(ResultSet resultSet) throws SQLException {

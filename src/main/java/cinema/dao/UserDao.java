@@ -10,13 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDao implements Dao<User> {
+import static cinema.query.UserQuery.*;
 
-    private static final String FIND_ALL_USERS_QUERY = "select id,login,password,role from users";
-    private static final String DELETE_USER_BY_ID_QUERY = "delete from users where id=?";
-    private static final String INSERT_USER_QUERY = "insert into users ( login, password, role) VALUES (?,?,?)";
-    private static final String UPDATE_USER_QUERY = "update users set login =?,password=?,role=? where id=?";
-    private static final String FIND_BY_ID_QUERY = "select id,login,password,role from users where id=?";
+public class UserDao implements Dao<User> {
 
     @Override
     public List<User> findAll() {
@@ -61,7 +57,7 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public void update(User user) {
+    public User update(User user) {
         try (Connection connection = ConnectionManager.get()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_QUERY);
             preparedStatement.setString(1, user.getLogin());
@@ -72,10 +68,11 @@ public class UserDao implements Dao<User> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return user;
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         try (Connection connection = ConnectionManager.get()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getLogin());
@@ -85,6 +82,7 @@ public class UserDao implements Dao<User> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return user;
     }
 
     private User buildUser(ResultSet resultSet) throws SQLException {
