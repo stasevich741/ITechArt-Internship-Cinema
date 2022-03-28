@@ -1,16 +1,18 @@
 package cinema.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
-    Long id;
-    String login;
-    String password;
-    Role userRole;
+    private Long id;
+    private String login;
+    private String password;
+    private Role userRole;
 
     public User(String login, String password, Role userRole) {
         this.login = login;

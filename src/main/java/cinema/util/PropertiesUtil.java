@@ -1,19 +1,20 @@
 package cinema.util;
 
 import cinema.exception.DaoException;
-import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@UtilityClass
-public class PropertiesUtil {
+public final class PropertiesUtil {
 
     private static final Properties PROPERTIES = new Properties();
 
     static {
         loadProperties();
+    }
+
+    private PropertiesUtil() {
     }
 
     private static void loadProperties() {

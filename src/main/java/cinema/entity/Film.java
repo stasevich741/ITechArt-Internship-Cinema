@@ -1,16 +1,18 @@
 package cinema.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Film {
 
-    Long id;
-    String name;
-    LocalDateTime timeAndDate;
-    int ticket;
+    private Long id;
+    private String name;
+    private LocalDateTime timeAndDate;
+    private int ticket;
 }

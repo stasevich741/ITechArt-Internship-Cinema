@@ -1,18 +1,20 @@
 package cinema.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Ticket {
 
-    Long id;
-    int userId;
-    String film;
-    int seatPlace;
-    BigDecimal price;
-    boolean isBought;
+    private Long id;
+    private int userId;
+    private String film;
+    private int seatPlace;
+    private BigDecimal price;
+    private boolean isBought;
 }

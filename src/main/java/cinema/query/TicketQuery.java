@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TicketQuery {
+public final class TicketQuery {
 
     public static final String FIND_ALL_TICKETS_QUERY = "select id, user_id, film, seat_place, price, is_bought from ticket";
     public static final String DELETE_TICKET_BY_ID_QUERY = "delete from ticket where id=?";

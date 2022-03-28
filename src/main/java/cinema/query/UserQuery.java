@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserQuery {
+public final class UserQuery {
 
     public static final String FIND_ALL_USERS_QUERY = "select id,login,password,role from users";
     public static final String DELETE_USER_BY_ID_QUERY = "delete from users where id=?";

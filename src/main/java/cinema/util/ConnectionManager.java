@@ -1,12 +1,9 @@
 package cinema.util;
 
-import lombok.experimental.UtilityClass;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@UtilityClass
 public class ConnectionManager {
 
     private static final String URL_KEY = "db.url";
