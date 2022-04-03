@@ -1,6 +1,6 @@
 package cinema;
 
-public class TestDao {
+public class StartApp {
     public static void main(String[] args) {
 
     }
