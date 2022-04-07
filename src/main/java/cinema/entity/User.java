@@ -13,9 +13,9 @@ public class User {
     private String password;
     private Role userRole;
 
-    public User(String login, String password, Role userRole) {
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
-        this.userRole = userRole;
+        this.userRole = Role.USER;
     }
 }
