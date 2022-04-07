@@ -26,10 +26,10 @@ public class Menu {
                 int command = Integer.parseInt(reader.nextLine());
 
                 if (command == 1) {
-                    registration();
+                    authentication();
 
                 } else if (command == 2) {
-                    authentication();
+                    registration();
 
                 } else if (command == 3) {
                     showFilms();
@@ -64,7 +64,7 @@ public class Menu {
         String login = reader.nextLine();
         System.out.println("введите пароль");
         String password = reader.nextLine();
-        return new User(login, password);
+        return new User();
     }
 
     private void mainMenu() {
