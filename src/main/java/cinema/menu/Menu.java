@@ -7,16 +7,21 @@ import cinema.dao.FilmDao;
 import cinema.dao.UserDao;
 import cinema.entity.Film;
 import cinema.entity.User;
+import cinema.util.ConnectionManager;
 
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import static cinema.query.UserQuery.FIND_BY_ID_QUERY;
 
 public class Menu {
 
     Scanner reader = new Scanner(System.in);
     UserDao userDao = new UserDao();
     FilmDao filmDao = new FilmDao();
+    UserActionMenu userActionMenu = new UserActionMenu();
 
     public void startMenu() {
 
@@ -60,17 +65,29 @@ public class Menu {
         userDao.save(user);
     }
 
-    private Optional<User> authentication() {
+    private void authentication() {
         System.out.println("введите логин");
         String login = reader.nextLine();
         System.out.println("введите пароль");
         String password = reader.nextLine();
         String sql_id_by_login_and_password = "select id from users where login='" + login + "' and password='" + password + "'";
-        Optional<User> userDaoById = userDao.findById(Long.parseLong(sql_id_by_login_and_password));
-        if (userDaoById.isPresent())
-            return userDaoById;
-        else throw new RuntimeException();
+        Long userId =0L;
+        try (Connection connection = ConnectionManager.get()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql_id_by_login_and_password);
+            while (resultSet.next()) {
+                userId = resultSet.getLong("id");
+            }
+            Optional<User> userDaoById = userDao.findById(userId);
+
+            if (userDaoById.isPresent())
+                userActionMenu.userMenu(userDaoById);
+            else throw new RuntimeException();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 
     private void mainMenu() {
         System.out.println("===МЕНЮ===" + "\n" +
