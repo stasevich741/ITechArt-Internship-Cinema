@@ -9,6 +9,7 @@ import cinema.entity.Film;
 import cinema.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Menu {
@@ -59,12 +60,16 @@ public class Menu {
         userDao.save(user);
     }
 
-    private User authentication() {
+    private Optional<User> authentication() {
         System.out.println("введите логин");
         String login = reader.nextLine();
         System.out.println("введите пароль");
         String password = reader.nextLine();
-        return new User();
+        String sql_id_by_login_and_password = "select id from users where login='" + login + "' and password='" + password + "'";
+        Optional<User> userDaoById = userDao.findById(Long.parseLong(sql_id_by_login_and_password));
+        if (userDaoById.isPresent())
+            return userDaoById;
+        else throw new RuntimeException();
     }
 
     private void mainMenu() {
