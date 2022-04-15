@@ -11,4 +11,5 @@ public final class UserQuery {
     public static final String INSERT_USER_QUERY = "insert into users ( login, password, role) VALUES (?,?,?)";
     public static final String UPDATE_USER_QUERY = "update users set login =?,password=?,role=? where id=?";
     public static final String FIND_BY_ID_QUERY = "select id,login,password,role from users where id=?";
+    public static final String SQL_ID_BY_LOGIN_AND_PASSWORD = "select id from users where login=? and password=?";
 }

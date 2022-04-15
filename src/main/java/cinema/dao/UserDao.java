@@ -85,6 +85,26 @@ public class UserDao implements Dao<User> {
         return user;
     }
 
+    public Optional<User> userAuthenticationByLoginAndPassword(String login, String password) {
+        Long userId;
+        Optional<User> userDaoById = Optional.empty();
+        try (Connection connection = ConnectionManager.get()) {
+            PreparedStatement statement = connection.prepareStatement(SQL_ID_BY_LOGIN_AND_PASSWORD);
+            statement.setString(1, login);
+            statement.setString(2, password);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                userId = result.getLong("id");
+                userDaoById = findById(userId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (userDaoById.isPresent())
+            return userDaoById;
+        else throw new RuntimeException("wrong login or password");
+    }
+
     private User buildUser(ResultSet resultSet) throws SQLException {
         return new User(
                 resultSet.getObject("id", Long.class),

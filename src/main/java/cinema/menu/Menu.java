@@ -1,48 +1,52 @@
 package cinema.menu;
-//Данный слой не хранит информацию, только обрабатывает.
-//        -     Слой консольного меню должен выводить информацию на экран, уметь получать информацию с экрана.
-//        При этом консольный слой не должен производить обработку информации, для этого должны вызываться специальные методы из сервисного слоя.
 
 import cinema.dao.FilmDao;
 import cinema.dao.UserDao;
 import cinema.entity.Film;
 import cinema.entity.User;
-import cinema.util.ConnectionManager;
 
-import java.sql.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
-
-import static cinema.query.UserQuery.FIND_BY_ID_QUERY;
 
 public class Menu {
 
-    Scanner reader = new Scanner(System.in);
-    UserDao userDao = new UserDao();
-    FilmDao filmDao = new FilmDao();
-    UserActionMenu userActionMenu = new UserActionMenu();
+    private final Scanner reader;
+    private final UserDao userDao;
+    private final FilmDao filmDao;
+    private final UserActionMenu userActionMenu;
+
+    private final String ASK_FOR_LOGIN = "enter login";
+    private final String ASK_FOR_PASSWORD = "enter password";
+    private final String WRONG_INPUT = "incorrect input";
+
+    public Menu(Scanner reader, UserDao userDao, FilmDao filmDao, UserActionMenu userActionMenu) {
+        this.reader = reader;
+        this.userDao = userDao;
+        this.filmDao = filmDao;
+        this.userActionMenu = userActionMenu;
+    }
 
     public void startMenu() {
-
         mainMenu();
-
         try {
             while (true) {
                 int command = Integer.parseInt(reader.nextLine());
-
-                if (command == 1) {
-                    authentication();
-
-                } else if (command == 2) {
-                    registration();
-
-                } else if (command == 3) {
-                    showFilms();
-
-                } else if (command == 4) System.exit(0);
-
-                else System.err.println("некорректный ввод");
+                switch (command) {
+                    case 1:
+                        authentication();
+                        break;
+                    case 2:
+                        registration();
+                        break;
+                    case 3:
+                        showFilms();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        System.err.println(WRONG_INPUT);
+                        break;
+                }
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -57,43 +61,27 @@ public class Menu {
     }
 
     private void registration() {
-        System.out.println("введите логин");
+        System.out.println(ASK_FOR_LOGIN);
         String login = reader.nextLine();
-        System.out.println("введите пароль");
+        System.out.println(ASK_FOR_PASSWORD);
         String password = reader.nextLine();
         User user = new User(login, password);
         userDao.save(user);
     }
 
     private void authentication() {
-        System.out.println("введите логин");
+        System.out.println(ASK_FOR_LOGIN);
         String login = reader.nextLine();
-        System.out.println("введите пароль");
+        System.out.println(ASK_FOR_PASSWORD);
         String password = reader.nextLine();
-        String sql_id_by_login_and_password = "select id from users where login='" + login + "' and password='" + password + "'";
-        Long userId =0L;
-        try (Connection connection = ConnectionManager.get()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql_id_by_login_and_password);
-            while (resultSet.next()) {
-                userId = resultSet.getLong("id");
-            }
-            Optional<User> userDaoById = userDao.findById(userId);
-
-            if (userDaoById.isPresent())
-                userActionMenu.userMenu(userDaoById);
-            else throw new RuntimeException();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userActionMenu.userMenu(userDao.userAuthenticationByLoginAndPassword(login, password));
     }
 
-
     private void mainMenu() {
-        System.out.println("===МЕНЮ===" + "\n" +
-                "1. войти" + "\n" +
-                "2. регистрация" + "\n" +
-                "3. просмотреть мероприятия(фильмы)" + "\n" +
-                "4. выход");
+        System.out.println("===MENU===" + "\n" +
+                "1. enter" + "\n" +
+                "2. registration" + "\n" +
+                "3. view events(movies)" + "\n" +
+                "4. quit");
     }
 }
