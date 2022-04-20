@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FilmService {
 
-    FilmDao filmDao;
+   private FilmDao filmDao;
 
     public FilmService(FilmDao filmDao) {
         this.filmDao = filmDao;

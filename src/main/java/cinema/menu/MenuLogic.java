@@ -1,5 +1,6 @@
 package cinema.menu;
 
+import cinema.constant.MenuSectionConst;
 import cinema.entity.Role;
 import cinema.entity.User;
 import cinema.menu.implementation.AdminMenuImpl;
@@ -11,18 +12,16 @@ import cinema.service.FilmService;
 import java.util.Optional;
 import java.util.Scanner;
 
-import static cinema.constant.MenuSectionConst.*;
-
 public class MenuLogic {
 
-    private final Scanner reader;
+    private Scanner reader;
 
-    private final UserMenuImpl userMenu;
-    private final ManagerMenuImpl managerMenu;
-    private final AdminMenuImpl adminMenu;
+    private Menu userMenu;
+    private Menu managerMenu;
+    private Menu adminMenu;
 
-    private final FilmService filmService;
-    private final AuthService authService;
+    private FilmService filmService;
+    private AuthService authService;
 
     public MenuLogic(Scanner reader, UserMenuImpl userMenu, ManagerMenuImpl managerMenu, AdminMenuImpl adminMenu, FilmService filmService, AuthService authService) {
         this.reader = reader;
@@ -34,7 +33,7 @@ public class MenuLogic {
     }
 
     public void showStartMenu() {
-        System.out.println(MAIN_MENU);
+        System.out.println(MenuSectionConst.MAIN_MENU);
         try {
             while (true) {
                 int command = Integer.parseInt(reader.nextLine());
@@ -51,7 +50,7 @@ public class MenuLogic {
                     case 4:
                         return;
                     default:
-                        System.err.println(WRONG_INPUT);
+                        System.err.println(MenuSectionConst.WRONG_INPUT);
                         break;
                 }
             }
@@ -60,20 +59,20 @@ public class MenuLogic {
         }
     }
 
-    void userMenuSelection(Optional<User> user) {
+    void selectUserMenu(Optional<User> user) {
 
         if (user.get().getUserRole() == Role.USER) {
-            System.out.println(USER_MENU);
+            System.out.println(MenuSectionConst.USER_MENU);
             userMenu.menu();
         }
 
         if (user.get().getUserRole() == Role.MANAGER) {
-            System.out.println(MANAGER_MENU);
+            System.out.println(MenuSectionConst.MANAGER_MENU);
             managerMenu.menu();
         }
 
         if (user.get().getUserRole() == Role.ADMIN) {
-            System.out.println(ADMIN_MENU);
+            System.out.println(MenuSectionConst.ADMIN_MENU);
             adminMenu.menu();
         }
     }
@@ -87,7 +86,7 @@ public class MenuLogic {
     }
 
     private void authentication() {
-        userMenuSelection(authService.authentication());
+        selectUserMenu(authService.authentication());
     }
 }
 

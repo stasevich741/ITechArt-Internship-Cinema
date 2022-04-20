@@ -1,15 +1,15 @@
 package cinema.menu.implementation;
 
+import cinema.constant.MenuSectionConst;
 import cinema.menu.Menu;
 
 import java.util.Scanner;
 
-import static cinema.constant.MenuSectionConst.MAIN_MENU;
-import static cinema.constant.MenuSectionConst.WRONG_INPUT;
-
 public class ManagerMenuImpl implements Menu {
 
-    Scanner reader = new Scanner(System.in);
+    private Scanner reader = new Scanner(System.in);
+
+    private AdminMenuImpl adminMenu = new AdminMenuImpl();
 
     public void menu() {
         try {
@@ -17,18 +17,24 @@ public class ManagerMenuImpl implements Menu {
                 int command = Integer.parseInt(reader.nextLine());
                 switch (command) {
                     case 1:
-                        editMovieByManager();
+                        adminMenu.showFilms();
                         break;
                     case 2:
-                        buyTicketByManager();
+                        adminMenu.showTickets();
                         break;
                     case 3:
-                        returnTicketByManager();
+                        editMovie();
                         break;
                     case 4:
-                        System.out.println(MAIN_MENU);
+                        buyTicket();
+                        break;
+                    case 5:
+                        returnTicket();
+                        break;
+                    case 6:
+                        System.out.println(MenuSectionConst.MAIN_MENU);
                     default:
-                        System.err.println(WRONG_INPUT);
+                        System.err.println(MenuSectionConst.WRONG_INPUT);
                         break;
                 }
             }
@@ -37,12 +43,15 @@ public class ManagerMenuImpl implements Menu {
         }
     }
 
-    private void returnTicketByManager() {
+    private void returnTicket() {
+
     }
 
-    private void buyTicketByManager() {
+    private void buyTicket() {
+
     }
 
-    private void editMovieByManager() {
+    private void editMovie() {
+        adminMenu.editMovie();
     }
 }

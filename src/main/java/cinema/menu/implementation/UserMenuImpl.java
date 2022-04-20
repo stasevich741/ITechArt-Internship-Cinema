@@ -1,15 +1,15 @@
 package cinema.menu.implementation;
 
+import cinema.constant.MenuSectionConst;
 import cinema.menu.Menu;
 
 import java.util.Scanner;
 
-import static cinema.constant.MenuSectionConst.MAIN_MENU;
-import static cinema.constant.MenuSectionConst.WRONG_INPUT;
-
 public class UserMenuImpl implements Menu {
 
-    Scanner reader = new Scanner(System.in);
+    private Scanner reader = new Scanner(System.in);
+
+    AdminMenuImpl adminMenu = new AdminMenuImpl();
 
     public void menu() {
         try {
@@ -17,20 +17,20 @@ public class UserMenuImpl implements Menu {
                 int command = Integer.parseInt(reader.nextLine());
                 switch (command) {
                     case 1:
-                        showFilms();
+                        adminMenu.showFilms();
                         break;
                     case 2:
-                        buyTicketByUser();
+                        buyTicket();
                         break;
                     case 3:
-                        returnTicketByUser();
+                        returnTicket();
                         break;
                     case 4:
-                        viewBoughtTicketsByUser();
+                        viewBoughtTickets();
                     case 5:
-                        System.out.println(MAIN_MENU);
+                        System.out.println(MenuSectionConst.MAIN_MENU);
                     default:
-                        System.err.println(WRONG_INPUT);
+                        System.err.println(MenuSectionConst.WRONG_INPUT);
                         break;
                 }
             }
@@ -39,15 +39,12 @@ public class UserMenuImpl implements Menu {
         }
     }
 
-    private void showFilms() {
+    private void buyTicket() {
     }
 
-    private void buyTicketByUser() {
+    private void returnTicket() {
     }
 
-    private void returnTicketByUser() {
-    }
-
-    private void viewBoughtTicketsByUser() {
+    private void viewBoughtTickets() {
     }
 }

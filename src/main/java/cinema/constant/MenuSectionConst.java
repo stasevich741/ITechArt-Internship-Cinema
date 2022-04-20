@@ -1,6 +1,9 @@
 package cinema.constant;
 
-public class MenuSectionConst {
+public final class MenuSectionConst {
+
+    private MenuSectionConst() {
+    }
 
     public static final String ASK_FOR_LOGIN = "enter login";
     public static final String ASK_FOR_PASSWORD = "enter password";
