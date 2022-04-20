@@ -1,6 +1,7 @@
 package cinema.menu.implementation;
 
 import cinema.constant.MenuSectionConst;
+import cinema.constant.RoleActionConst;
 import cinema.dao.FilmDao;
 import cinema.dao.TicketDao;
 import cinema.dao.UserDao;
@@ -23,7 +24,7 @@ public class AdminMenuImpl implements Menu {
     private UserDao userDao = new UserDao();
     private TicketDao ticketDao = new TicketDao();
 
-    public void menu() {
+    public void showMenu() {
         try {
             while (true) {
                 int command = Integer.parseInt(reader.nextLine());
@@ -64,7 +65,7 @@ public class AdminMenuImpl implements Menu {
         List<Ticket> tickets = ticketDao.findAll();
         for (Ticket ticket : tickets) {
             System.out.println(ticket);
-            menu();
+            showMenu();
         }
     }
 
@@ -72,7 +73,7 @@ public class AdminMenuImpl implements Menu {
         List<Film> films = filmDao.findAll();
         for (Film film : films) {
             System.out.println(film);
-            menu();
+            showMenu();
         }
     }
 
@@ -80,12 +81,12 @@ public class AdminMenuImpl implements Menu {
         List<User> users = userDao.findAll();
         for (User user : users) {
             System.out.println(user);
-            menu();
+            showMenu();
         }
     }
 
     void editMovie() {
-        System.out.println("edit movie: enter movie id for edit");
+        System.out.println(RoleActionConst.EDIT_MOVIE);
         Long id = null;
         try {
             id = Long.getLong(reader.nextLine());
@@ -95,9 +96,9 @@ public class AdminMenuImpl implements Menu {
 
         Optional<Film> filmOptional = filmDao.findById(id);
         Film film = filmOptional.get();
-        System.out.println("enter new name");
+        System.out.println(RoleActionConst.ENTER_NAME);
         film.setName(reader.nextLine());
-        System.out.println("enter new count of tickets");
+        System.out.println(RoleActionConst.ENTER_COUNT_TICKETS);
         try {
             film.setTicket(Integer.parseInt(reader.nextLine()));
         } catch (NumberFormatException e) {
@@ -107,7 +108,7 @@ public class AdminMenuImpl implements Menu {
     }
 
     private void deleteMovie() {
-        System.out.println("delete move: inter movie id for delete");
+        System.out.println(RoleActionConst.DELETE_MOVIE);
         Long id = null;
         try {
             id = Long.getLong(reader.nextLine());
@@ -119,7 +120,7 @@ public class AdminMenuImpl implements Menu {
     }
 
     private void editUser() {
-        System.out.println("edit user: enter user id for edit");
+        System.out.println(RoleActionConst.EDIT_USER);
         Long id = null;
         try {
             id = Long.getLong(reader.nextLine());
@@ -128,18 +129,18 @@ public class AdminMenuImpl implements Menu {
         }
         Optional<User> filmOptional = userDao.findById(id);
         User user = filmOptional.get();
-        System.out.println("enter new name");
+        System.out.println(RoleActionConst.ENTER_NAME);
         user.setLogin(reader.nextLine());
 
-        System.out.println("enter new password");
+        System.out.println(RoleActionConst.ENTER_PASSWORD);
         user.setPassword(reader.nextLine());
 
-        System.out.println("enter role: USER / MANAGER / ADMIN");
+        System.out.println(RoleActionConst.ENTER_ROLE);
         user.setUserRole(Role.valueOf(reader.nextLine()));
     }
 
     private void deleteUser() {
-        System.out.println("inter user id for delete");
+        System.out.println(RoleActionConst.DELETE_USER);
         Long id = null;
         try {
             id = Long.getLong(reader.nextLine());

@@ -16,18 +16,14 @@ public class MenuLogic {
 
     private Scanner reader;
 
-    private Menu userMenu;
-    private Menu managerMenu;
-    private Menu adminMenu;
+    private Menu menu;
 
     private FilmService filmService;
     private AuthService authService;
 
-    public MenuLogic(Scanner reader, UserMenuImpl userMenu, ManagerMenuImpl managerMenu, AdminMenuImpl adminMenu, FilmService filmService, AuthService authService) {
+    public MenuLogic(Scanner reader, UserMenuImpl userMenu, FilmService filmService, AuthService authService) {
         this.reader = reader;
-        this.userMenu = userMenu;
-        this.managerMenu = managerMenu;
-        this.adminMenu = adminMenu;
+        this.menu = userMenu;
         this.filmService = filmService;
         this.authService = authService;
     }
@@ -63,17 +59,19 @@ public class MenuLogic {
 
         if (user.get().getUserRole() == Role.USER) {
             System.out.println(MenuSectionConst.USER_MENU);
-            userMenu.menu();
+            menu.showMenu();
         }
 
         if (user.get().getUserRole() == Role.MANAGER) {
             System.out.println(MenuSectionConst.MANAGER_MENU);
-            managerMenu.menu();
+            menu = new ManagerMenuImpl();
+            menu.showMenu();
         }
 
         if (user.get().getUserRole() == Role.ADMIN) {
             System.out.println(MenuSectionConst.ADMIN_MENU);
-            adminMenu.menu();
+            menu = new AdminMenuImpl();
+            menu.showMenu();
         }
     }
 

@@ -1,6 +1,9 @@
 package cinema.menu.implementation;
 
 import cinema.constant.MenuSectionConst;
+import cinema.constant.RoleActionConst;
+import cinema.dao.TicketDao;
+import cinema.entity.Ticket;
 import cinema.menu.Menu;
 
 import java.util.Scanner;
@@ -9,9 +12,12 @@ public class UserMenuImpl implements Menu {
 
     private Scanner reader = new Scanner(System.in);
 
-    AdminMenuImpl adminMenu = new AdminMenuImpl();
+    TicketDao ticketDao = new TicketDao();
 
-    public void menu() {
+    private AdminMenuImpl adminMenu = new AdminMenuImpl();
+    private ManagerMenuImpl managerMenu = new ManagerMenuImpl();
+
+    public void showMenu() {
         try {
             while (true) {
                 int command = Integer.parseInt(reader.nextLine());
@@ -40,11 +46,22 @@ public class UserMenuImpl implements Menu {
     }
 
     private void buyTicket() {
+        System.out.println(RoleActionConst.BUY_TICKET);
+        Ticket ticket = managerMenu.getTicketIdByInput();
+        ticket.setBought(true);
+//       set user_id this
+        ticketDao.update(ticket);
     }
 
     private void returnTicket() {
+        System.out.println(RoleActionConst.RETURN_TICKET);
+        Ticket ticket = managerMenu.getTicketIdByInput();
+        ticket.setBought(false);
+        //user_id null
+        ticketDao.update(ticket);
     }
 
     private void viewBoughtTickets() {
+//select from ticket where user_id = this
     }
 }
